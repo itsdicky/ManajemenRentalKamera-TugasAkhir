@@ -1,42 +1,70 @@
 
 package sewakamera;
 
-public class Kamera extends Barang {
-    int thProduksi;
-    int shtCount;
+public class Kamera {
+    int thProduksi,shtCount,idKamera,hargaKamera,statusKamera;
+    int rasio = 100;
+    String jenisKamera,namaKamera;
+    double rateHarga;
     
     //constructor
     Kamera(int id,String jenis,String nama,int harga,int tahun,int count,int status){
-        idBarang = id;
-        jenisBarang = jenis;
-        namaBarang = nama;
-        hargaBarang = harga;
+        idKamera = id;
+        jenisKamera = jenis;
+        namaKamera = nama;
+        hargaKamera = harga;
         thProduksi = tahun;
         shtCount = count;
-        statusBarang = status;
+        statusKamera = status;
+        rateHarga = harga/this.rasio;
     }
     
+    /*
     Kamera(String nama){
-        namaBarang = nama;
+        namaKamera = nama;
+    } */
+    
+    /*
+    Kamera(int id){
+        idKamera = id;
+    } */
+
+    //method get status, dipakai saat menampilkan ke tabelStock
+    public String getStatus(){
+        String stringStatus = null;
+        if(this.statusKamera==0){
+            stringStatus = "Booked";
+        }else if(this.statusKamera==1){
+            stringStatus = "Ready";
+        }
+        return stringStatus;
+    }
+
+    //method set status
+    public void setStatus(int binary){
+        this.statusKamera = binary;
     }
     
-    Kamera(int id){
-        idBarang = id;
-    }  
+    //method set rate harga
+    /*
+    public void setRate(int harga){
+        this.rateHarga = harga/this.rasio;
+    } */
     
     //set nama kamera
     public void setNama(String nama){
-        this.namaBarang = nama;
+        this.namaKamera = nama;
     }
     
     //set jenis kamera
     public void setJenis(String jenis){
-        this.jenisBarang = jenis;
+        this.jenisKamera = jenis;
     }
     
     //set harga kamera
     public void setHarga(int harga){
-        this.hargaBarang = harga;
+        this.hargaKamera = harga;
+        this.rateHarga = harga/this.rasio;
     }
     
     //set tahun kamera

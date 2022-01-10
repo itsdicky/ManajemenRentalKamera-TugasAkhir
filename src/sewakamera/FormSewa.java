@@ -24,7 +24,7 @@ public class FormSewa extends javax.swing.JFrame {
     DefaultTableModel modelOrder;
     DefaultTableModel modelStock;
     Order order = new Order();//instansiasi class Order
-    StockBarang stock = new StockBarang(); //instansiasi class StockBarang
+    StockKamera stock = new StockKamera(); //instansiasi class StockBarang
 
     public FormSewa() {
         initComponents();
@@ -1117,24 +1117,23 @@ public class FormSewa extends javax.swing.JFrame {
     private void btnHapusOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusOrderActionPerformed
         if(tableOrder.isRowSelected(tableOrder.getSelectedRow())){
             String id = modelOrder.getValueAt(tableOrder.getSelectedRow(), 0).toString(); //mengambil id order dari tabel
-            int aidi = Integer.parseInt(id); //mengubah tipe id ke int
+            int idInt = Integer.parseInt(id); //mengubah tipe id ke int
             int idBarang = stock.toID(tableOrder.getValueAt(tableOrder.getSelectedRow(), 5).toString()); //mendapatkan id kamera
             
             //konfirmasi hapus
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(this, "Apakah barang sudah dikembalikan?","Hapus", dialogButton);
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Apakah barang sudah dikembalikan?","Hapus", JOptionPane.YES_NO_OPTION);
 
             if(dialogResult == 0){
                 try{
                     //koneksi database
                     Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/sewa_kamera","root","");
-                    PreparedStatement pst = cn.prepareStatement("DELETE FROM list_order WHERE id_order='"+aidi+"'");
+                    PreparedStatement pst = cn.prepareStatement("DELETE FROM list_order WHERE id_order='"+idInt+"'");
                     pst.execute();
                     
                     stock.changeStatus(idBarang, 1); //merubah status
                     cn.createStatement().executeUpdate("update list_stock set status_stock='"+stock.getStatusByID(idBarang)+"' where id_stock='"+idBarang+"'"); //merubah status barang di database
-                    order.hapusOrder(aidi); //hapus order
-                    modelOrder.removeRow(tableOrder.getSelectedRow()); //menghapus baris tabel
+                    order.hapusOrder(idInt); //hapus order
+                    //modelOrder.removeRow(tableOrder.getSelectedRow()); //menghapus baris tabel
                     tampilStock(); //refresh tampilan tabel
                 }catch(SQLException e){
                     JOptionPane.showMessageDialog(null, "terjadi kesalahan!!!");
@@ -1166,8 +1165,7 @@ public class FormSewa extends javax.swing.JFrame {
 
     //method button log out
     private void btnLogOutMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogOutMouseReleased
-        int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog(this, "Apakah anda ingin keluar?","Keluar", dialogButton);
+        int dialogResult = JOptionPane.showConfirmDialog(this, "Apakah anda ingin keluar?","Keluar", JOptionPane.YES_NO_OPTION);
         if(dialogResult == 0){
             new Login().setVisible(true);
             close(); 
@@ -1222,21 +1220,21 @@ public class FormSewa extends javax.swing.JFrame {
     private void btnHapusKameraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusKameraActionPerformed
         if(tableStock.isRowSelected(tableStock.getSelectedRow())){
             String id = modelStock.getValueAt(tableStock.getSelectedRow(), 0).toString(); //mendapatkan id kamera dari tabel
-            int aidi = Integer.parseInt(id); //merubah id kamera ke int
-            if(stock.isStatusReady(aidi)==true){
+            int idInt = Integer.parseInt(id); //merubah id kamera ke int
+            if(stock.isStatusReady(idInt)==true){
                 //konfirmasi
-                int dialogButton = JOptionPane.YES_NO_OPTION;
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Apakah barang akan dihapus?","Hapus", dialogButton);
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Apakah barang akan dihapus?","Hapus", JOptionPane.YES_NO_OPTION);
                 
                 if(dialogResult == 0){
                     try{
                         //koneksi database
                         Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/sewa_kamera","root","");
-                        PreparedStatement pst = cn.prepareStatement("DELETE FROM list_stock WHERE id_stock='"+aidi+"'");
+                        PreparedStatement pst = cn.prepareStatement("DELETE FROM list_stock WHERE id_stock='"+idInt+"'");
                         pst.execute();
                         
-                        stock.hapusStock(aidi); //menghapus barang
+                        stock.hapusStock(idInt); //menghapus barang
                         modelStock.removeRow(tableStock.getSelectedRow()); //menghapus baris tabel
+                        //tampilStock?
                     }catch(SQLException e){
                         JOptionPane.showMessageDialog(null, "terjadi kesalahan!!!");
                     }

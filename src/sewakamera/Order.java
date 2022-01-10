@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Order {
     
-
     //idOrder awal
     private int idOrder = 0;
     
