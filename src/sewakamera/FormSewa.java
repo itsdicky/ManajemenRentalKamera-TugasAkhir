@@ -1133,7 +1133,7 @@ public class FormSewa extends javax.swing.JFrame {
                     stock.changeStatus(idBarang, 1); //merubah status
                     cn.createStatement().executeUpdate("update list_stock set status_stock='"+stock.getStatusByID(idBarang)+"' where id_stock='"+idBarang+"'"); //merubah status barang di database
                     order.hapusOrder(idInt); //hapus order
-                    //modelOrder.removeRow(tableOrder.getSelectedRow()); //menghapus baris tabel
+                    modelOrder.removeRow(tableOrder.getSelectedRow()); //menghapus baris tabel
                     tampilStock(); //refresh tampilan tabel
                 }catch(SQLException e){
                     JOptionPane.showMessageDialog(null, "terjadi kesalahan!!!");
